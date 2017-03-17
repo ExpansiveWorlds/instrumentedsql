@@ -25,14 +25,14 @@ func (tracer) GetSpan(ctx context.Context) tracedSQL.Span {
 	return span{parent: opentracing.SpanFromContext(ctx)}
 }
 
-func (span span) NewChild(name string) tracedSQL.Span {
-	return span{parent: opentracing.StartSpan(name, opentracing.ChildOf(span.parent.Context()))}
+func (s span) NewChild(name string) tracedSQL.Span {
+	return span{parent: opentracing.StartSpan(name, opentracing.ChildOf(s.parent.Context()))}
 }
 
-func (span span) SetLabel(k, v string) {
-	span.parent.SetTag(k, v)
+func (s span) SetLabel(k, v string) {
+	s.parent.SetTag(k, v)
 }
 
-func (span span) Finish() {
-	span.parent.Finish()
+func (s span) Finish() {
+	s.parent.Finish()
 }
