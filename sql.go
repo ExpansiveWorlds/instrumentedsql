@@ -127,7 +127,7 @@ func (d wrappedDriver) Open(name string) (driver.Conn, error) {
 		return nil, err
 	}
 
-	return wrappedConn{Logger: d.Logger, parent: conn}, nil
+	return wrappedConn{Tracer: d.Tracer, Logger: d.Logger, parent: conn}, nil
 }
 
 func (c wrappedConn) Prepare(query string) (driver.Stmt, error) {
