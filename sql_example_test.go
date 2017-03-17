@@ -12,7 +12,7 @@ import (
 
 // WrapDriverGoogle demonstrates how to call wrapDriver and register a new driver.
 // This example uses MySQL and google tracing to illustrate this
-func Example_WrapDriverGoogle() {
+func ExampleWrapDriver_Google() {
 	logger := func(ctx context.Context, msg string, keyvals ...interface{}) {
 		log.Printf("%s %v", msg, keyvals)
 	}
@@ -23,7 +23,7 @@ func Example_WrapDriverGoogle() {
 
 // WrapDriverOpentracing demonstrates how to call wrapDriver and register a new driver.
 // This example uses MySQL and opentracing to illustrate this
-func Example_WrapDriverOpentracing() {
+func ExampleWrapDriver_Opentracing() {
 	logger := func(ctx context.Context, msg string, keyvals ...interface{}) {
 		log.Printf("%s %v", msg, keyvals)
 	}
