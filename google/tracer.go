@@ -18,6 +18,10 @@ func NewTracer() tracedSQL.Tracer { return tracer{} }
 
 // GetSpan fetches a span from the context and wraps it
 func (tracer) GetSpan(ctx context.Context) tracedSQL.Span {
+	if ctx == nil {
+		return span{parent: nil}
+	}
+
 	return span{parent: trace.FromContext(ctx)}
 }
 
