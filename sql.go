@@ -118,7 +118,7 @@ func WrapDriver(driver driver.Driver, tracer Tracer, logger Logger) driver.Drive
 		tracer = nullTracer{}
 	}
 
-	return wrappedDriver{Logger: logger, parent: driver}
+	return wrappedDriver{Tracer: tracer, Logger: logger, parent: driver}
 }
 
 func (d wrappedDriver) Open(name string) (driver.Conn, error) {

@@ -21,14 +21,14 @@ func (tracer) GetSpan(ctx context.Context) tracedSQL.Span {
 	return span{parent: trace.FromContext(ctx)}
 }
 
-func (span span) NewChild(name string) tracedSQL.Span {
-	return span{parent: span.parent.NewChild(name) }
+func (s span) NewChild(name string) tracedSQL.Span {
+	return span{parent: s.parent.NewChild(name) }
 }
 
-func (span span) SetLabel(k, v string) {
-	span.parent.SetLabel(k, v)
+func (s span) SetLabel(k, v string) {
+	s.parent.SetLabel(k, v)
 }
 
-func (span span) Finish() {
-	span.parent.Finish()
+func (s span) Finish() {
+	s.parent.Finish()
 }
