@@ -1,4 +1,4 @@
-package tracedSQL
+package instrumentedsql
 
 import (
 	"context"
@@ -8,34 +8,6 @@ import (
 	"github.com/kr/pretty"
 	"github.com/pkg/errors"
 )
-
-// Tracer is the interface needed to be implemented by any tracing implementation we use
-type Tracer interface {
-	GetSpan(ctx context.Context) Span
-}
-
-// Span is part of the interface needed to be implemented by any tracing implementation we use
-type Span interface {
-	NewChild(string) Span
-	SetLabel(k, v string)
-	Finish()
-}
-
-// Logger is the interface needed to be implemented by any logging implementation we use, see also NewFuncLogger
-type Logger interface {
-	Log(ctx context.Context, msg string, keyvals ...interface{})
-}
-
-// LogFunc is a logging function that can be passed to NewFuncLogger
-type LogFunc func(ctx context.Context, msg string, keyvals ...interface{})
-
-type funcLogger struct {
-	logger LogFunc
-}
-
-type nullLogger struct {}
-type nullTracer struct{}
-type nullSpan struct{}
 
 type wrappedDriver struct {
 	Logger
@@ -64,12 +36,6 @@ type wrappedStmt struct {
 	parent driver.Stmt
 }
 
-type wrappedValue struct {
-	Logger
-	Tracer
-	parent driver.Value
-}
-
 type wrappedResult struct {
 	Logger
 	Tracer
@@ -84,41 +50,24 @@ type wrappedRows struct {
 	parent driver.Rows
 }
 
-func (nullLogger) Log(ctx context.Context, msg string, keyvals ...interface{}) {}
-
-// NewFuncLogger accepts a logging function and returns a matching Logger for it
-func NewFuncLogger(logger func(ctx context.Context, msg string, keyvals ...interface{})) Logger {
-	return funcLogger{logger: logger}
-}
-
-func (l funcLogger) Log(ctx context.Context, msg string, keyvals ...interface{}) {
-	l.logger(ctx, msg, keyvals...)
-}
-
-func (nullTracer) GetSpan(ctx context.Context) Span {
-	return nullSpan{}
-}
-
-func (nullSpan) NewChild(string) Span {
-	return nullSpan{}
-}
-
-func (nullSpan) SetLabel(k, v string) {}
-
-func (nullSpan) Finish() {}
-
 // WrapDriver will wrap the passed SQL driver and return a new sql driver that uses it and also logs and traces calls using the passed logger and tracer
 // The returned driver will still have to be registered with the sql package before it can be used.
-func WrapDriver(driver driver.Driver, tracer Tracer, logger Logger) driver.Driver {
-	if logger == nil {
-		logger = nullLogger{}
+func WrapDriver(driver driver.Driver, opts ...Opt) driver.Driver {
+	d := wrappedDriver{parent: driver}
+
+	for _, opt := range opts {
+		opt(&d)
 	}
 
-	if tracer == nil {
-		tracer = nullTracer{}
+	if d.Logger == nil {
+		d.Logger = nullLogger{}
+	}
+	if d.Tracer == nil {
+		d.Tracer = nullTracer{}
 	}
 
-	return wrappedDriver{Tracer: tracer, Logger: logger, parent: driver}
+
+	return d
 }
 
 func (d wrappedDriver) Open(name string) (driver.Conn, error) {

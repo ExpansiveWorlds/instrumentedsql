@@ -3,7 +3,7 @@ package opentracing
 import (
 	"context"
 
-	"github.com/ExpansiveWorlds/traced-sql"
+	"github.com/ExpansiveWorlds/instrumentedsql"
 	"github.com/opentracing/opentracing-go"
 )
 
@@ -14,10 +14,10 @@ type span struct {
 }
 
 // NewTracer returns a tracer that will fetch spans using opentracing's SpanFromContext function
-func NewTracer() tracedSQL.Tracer { return tracer{} }
+func NewTracer() instrumentedsql.Tracer { return tracer{} }
 
 // GetSpan returns a span
-func (tracer) GetSpan(ctx context.Context) tracedSQL.Span {
+func (tracer) GetSpan(ctx context.Context) instrumentedsql.Span {
 	if ctx == nil {
 		return span{parent: nil}
 	}
@@ -25,7 +25,7 @@ func (tracer) GetSpan(ctx context.Context) tracedSQL.Span {
 	return span{parent: opentracing.SpanFromContext(ctx)}
 }
 
-func (s span) NewChild(name string) tracedSQL.Span {
+func (s span) NewChild(name string) instrumentedsql.Span {
 	return span{parent: opentracing.StartSpan(name, opentracing.ChildOf(s.parent.Context()))}
 }
 
