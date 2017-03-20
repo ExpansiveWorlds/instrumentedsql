@@ -3,11 +3,12 @@ package opentracing
 import (
 	"context"
 
-	"github.com/ExpansiveWorlds/instrumentedsql"
 	"github.com/opentracing/opentracing-go"
+
+	"github.com/ExpansiveWorlds/instrumentedsql"
 )
 
-type tracer struct {}
+type tracer struct{}
 
 type span struct {
 	parent opentracing.Span

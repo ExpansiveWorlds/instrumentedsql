@@ -3,11 +3,12 @@ package google
 import (
 	"context"
 
-	"github.com/ExpansiveWorlds/instrumentedsql"
 	"cloud.google.com/go/trace"
+
+	"github.com/ExpansiveWorlds/instrumentedsql"
 )
 
-type tracer struct {}
+type tracer struct{}
 
 type span struct {
 	parent *trace.Span
@@ -26,7 +27,7 @@ func (tracer) GetSpan(ctx context.Context) instrumentedsql.Span {
 }
 
 func (s span) NewChild(name string) instrumentedsql.Span {
-	return span{parent: s.parent.NewChild(name) }
+	return span{parent: s.parent.NewChild(name)}
 }
 
 func (s span) SetLabel(k, v string) {

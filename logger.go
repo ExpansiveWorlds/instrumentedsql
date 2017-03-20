@@ -10,7 +10,7 @@ type Logger interface {
 // LogFunc is a logging function that can be passed to NewFuncLogger
 type LogFunc func(ctx context.Context, msg string, keyvals ...interface{})
 
-type nullLogger struct {}
+type nullLogger struct{}
 
 func (nullLogger) Log(ctx context.Context, msg string, keyvals ...interface{}) {}
 
