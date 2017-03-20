@@ -1,4 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/ExpansiveWorlds/traced-sql?status.svg)](https://godoc.org/github.com/ExpansiveWorlds/traced-sql)
+[![GoDoc](https://godoc.org/github.com/ExpansiveWorlds/instrumentedsql?status.svg)](https://godoc.org/github.com/ExpansiveWorlds/instrumentedsql)
 
 # instrumentedsql
 A sql driver that will wrap any other driver and log/trace all its calls
