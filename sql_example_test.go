@@ -48,8 +48,8 @@ func ExampleWrapDriver_justLogging() {
 		log.Printf("%s %v", msg, keyvals)
 	}
 
-	sql.Register("instrumented-mysql", instrumentedsql.WrapDriver(&sqlite3.SQLiteDriver{}, instrumentedsql.WithLogger(instrumentedsql.NewFuncLogger(logger))))
-	db, err := sql.Open("instrumented-mysql", "connString")
+	sql.Register("instrumented-sqlite", instrumentedsql.WrapDriver(&sqlite3.SQLiteDriver{}, instrumentedsql.WithLogger(instrumentedsql.NewFuncLogger(logger))))
+	db, err := sql.Open("instrumented-sqlite", "connString")
 
 	// Proceed to handle connection errors and use the database as usual
 	_, _ = db, err
