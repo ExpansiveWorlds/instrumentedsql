@@ -38,3 +38,13 @@ func ExampleWrapDriver_opentracing() {
 	// Proceed to handle connection errors and use the database as usual
 	_, _ = db, err
 }
+
+// WrapDriverJustLogging demonstrates how to call wrapDriver and register a new driver.
+// This example uses MySQL, but does not trace, but merely logs all calls
+func ExampleWrapDriver_justLogging() {
+	logger := func(ctx context.Context, msg string, keyvals ...interface{}) {
+		log.Printf("%s %v", msg, keyvals)
+	}
+
+	sql.Register("instrumented-mysql", WrapDriver(mysql.MySQLDriver{}, WithLogger(NewFuncLogger(logger))))
+}
