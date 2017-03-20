@@ -18,6 +18,10 @@ func ExampleWrapDriver_google() {
 	}
 
 	sql.Register("instrumented-mysql", WrapDriver(mysql.MySQLDriver{}, WithTracer(google.NewTracer()), WithLogger(NewFuncLogger(logger))))
+	db, err := sql.Open("instrumented-mysql", "connString")
+
+	// Proceed to handle connection errors and use the database as usual
+	_, _ = db, err
 }
 
 
@@ -29,4 +33,8 @@ func ExampleWrapDriver_opentracing() {
 	}
 
 	sql.Register("instrumented-mysql", WrapDriver(mysql.MySQLDriver{}, WithTracer(opentracing.NewTracer()), WithLogger(NewFuncLogger(logger))))
+	db, err := sql.Open("instrumented-mysql", "connString")
+
+	// Proceed to handle connection errors and use the database as usual
+	_, _ = db, err
 }
