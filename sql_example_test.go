@@ -47,4 +47,8 @@ func ExampleWrapDriver_justLogging() {
 	}
 
 	sql.Register("instrumented-mysql", WrapDriver(mysql.MySQLDriver{}, WithLogger(NewFuncLogger(logger))))
+	db, err := sql.Open("instrumented-mysql", "connString")
+
+	// Proceed to handle connection errors and use the database as usual
+	_, _ = db, err
 }
