@@ -1,12 +1,13 @@
 package instrumentedsql_test
 
 import (
-	"database/sql"
 	"context"
+	"database/sql"
 	"log"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/mattn/go-sqlite3"
+
 	"github.com/ExpansiveWorlds/instrumentedsql"
 	"github.com/ExpansiveWorlds/instrumentedsql/google"
 	"github.com/ExpansiveWorlds/instrumentedsql/opentracing"
@@ -25,7 +26,6 @@ func ExampleWrapDriver_google() {
 	// Proceed to handle connection errors and use the database as usual
 	_, _ = db, err
 }
-
 
 // WrapDriverOpentracing demonstrates how to call wrapDriver and register a new driver.
 // This example uses MySQL and opentracing to illustrate this
