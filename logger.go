@@ -7,22 +7,14 @@ type Logger interface {
 	Log(ctx context.Context, msg string, keyvals ...interface{})
 }
 
-// LogFunc is a logging function that can be passed to NewFuncLogger
-type LogFunc func(ctx context.Context, msg string, keyvals ...interface{})
-
 type nullLogger struct{}
 
 func (nullLogger) Log(ctx context.Context, msg string, keyvals ...interface{}) {}
 
-type funcLogger struct {
-	logger LogFunc
-}
+// LoggerFunc is an adapter which allows a function to be used as a Logger.
+type LoggerFunc func(ctx context.Context, msg string, keyvals ...interface{})
 
-// NewFuncLogger accepts a logging function and returns a matching Logger for it
-func NewFuncLogger(logger func(ctx context.Context, msg string, keyvals ...interface{})) Logger {
-	return funcLogger{logger: logger}
-}
-
-func (l funcLogger) Log(ctx context.Context, msg string, keyvals ...interface{}) {
-	l.logger(ctx, msg, keyvals...)
+// Log calls f(ctx, msg, keyvals...).
+func (f LoggerFunc) Log(ctx context.Context, msg string, keyvals ...interface{}) {
+	f(ctx, msg, keyvals...)
 }
