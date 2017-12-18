@@ -3,6 +3,10 @@
 # instrumentedsql
 A sql driver that will wrap any other driver and log/trace all its calls
 
+## How to use
+
+Please see the [documentation](https://godoc.org/github.com/ExpansiveWorlds/instrumentedsql) and [examples](https://github.com/ExpansiveWorlds/instrumentedsql/blob/master/sql_example_test.go)
+
 ## Roadmap
 
 Reach API stability and decide what is in/out of scope for this package.
