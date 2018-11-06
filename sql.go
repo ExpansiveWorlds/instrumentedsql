@@ -408,6 +408,7 @@ func (s wrappedStmt) QueryContext(ctx context.Context, args []driver.NamedValue)
 		return nil, ctx.Err()
 	}
 
+	s.ctx = ctx
 	return s.Query(dargs)
 }
 
