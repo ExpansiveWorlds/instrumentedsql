@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
+	"reflect"
 
 	"github.com/kr/pretty"
 	"github.com/pkg/errors"
@@ -453,6 +454,43 @@ func (r wrappedRows) Next(dest []driver.Value) (err error) {
 	}()
 
 	return r.parent.Next(dest)
+}
+
+func (r wrappedRows) ColumnTypeScanType(index int) reflect.Type {
+	if propi, ok := r.parent.(driver.RowsColumnTypeScanType); ok {
+		return propi.ColumnTypeScanType(index)
+	}
+	// We just return a basic interface if anything else failed
+	return reflect.TypeOf(new(interface{})).Elem()
+}
+
+func (r wrappedRows) ColumnTypeDatabaseTypeName(index int) string {
+	if propi, ok := r.parent.(driver.RowsColumnTypeDatabaseTypeName); ok {
+		return propi.ColumnTypeDatabaseTypeName(index)
+	}
+	// If the conversion failed, return an empty string
+	return ""
+}
+
+func (r wrappedRows) ColumnTypeLength(index int) (int64, bool) {
+	if propi, ok := r.parent.(driver.RowsColumnTypeLength); ok {
+		return propi.ColumnTypeLength(index)
+	}
+	return 0, false
+}
+
+func (r wrappedRows) ColumnTypeNullable(index int) (bool, bool) {
+	if propi, ok := r.parent.(driver.RowsColumnTypeNullable); ok {
+		return propi.ColumnTypeNullable(index)
+	}
+	return false, false
+}
+
+func (r wrappedRows) ColumnTypePrecisionScale(index int) (int64, int64, bool) {
+	if propi, ok := r.parent.(driver.RowsColumnTypePrecisionScale); ok {
+		return propi.ColumnTypePrecisionScale(index)
+	}
+	return 0, 0, false
 }
 
 // namedValueToValue is a helper function copied from the database/sql package
