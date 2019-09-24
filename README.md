@@ -1,11 +1,11 @@
-[![GoDoc](https://godoc.org/github.com/ExpansiveWorlds/instrumentedsql?status.svg)](https://godoc.org/github.com/ExpansiveWorlds/instrumentedsql)
+[![GoDoc](https://godoc.org/github.com/lebiathan/instrumentedsql?status.svg)](https://godoc.org/github.com/ExpansiveWorlds/instrumentedsql)
 
 # instrumentedsql
 A sql driver that will wrap any other driver and log/trace all its calls
 
 ## How to use
 
-Please see the [documentation](https://godoc.org/github.com/ExpansiveWorlds/instrumentedsql) and [examples](https://github.com/ExpansiveWorlds/instrumentedsql/blob/master/sql_example_test.go)
+Please see the [documentation](https://godoc.org/github.com/lebiathan/instrumentedsql) and [examples](https://github.com/ExpansiveWorlds/instrumentedsql/blob/master/sql_example_test.go)
 
 ## Roadmap
 
