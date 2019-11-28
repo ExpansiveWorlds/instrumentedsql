@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"github.com/go-sql-driver/mysql"
-	"github.com/mattn/go-sqlite3"
 
 	"github.com/ExpansiveWorlds/instrumentedsql"
 	"github.com/ExpansiveWorlds/instrumentedsql/google"
@@ -48,7 +47,7 @@ func ExampleWrapDriver_justLogging() {
 		log.Printf("%s %v", msg, keyvals)
 	})
 
-	sql.Register("instrumented-sqlite", instrumentedsql.WrapDriver(&sqlite3.SQLiteDriver{}, instrumentedsql.WithLogger(logger)))
+	sql.Register("instrumented-sqlite", instrumentedsql.WrapDriver(mysql.MySQLDriver{}, instrumentedsql.WithLogger(logger)))
 	db, err := sql.Open("instrumented-sqlite", "connString")
 
 	// Proceed to handle connection errors and use the database as usual
